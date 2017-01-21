@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>15 Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="js-15-game.css">
+  </head>
+  <body>
+
+    <div class="wrap game is-new-game" id="board">
+      <h1 class="title">15 Game</h1>
+      <p class="move-counter">Number of moves: <span id="move-counter">0</span></p>
+      <button class="reset-button" id="reset" name="reset">New Puzzle</button>
+      <div class="board">
+        <div id="n1" class="tile c1 r1">1</div>
+        <div id="n2" class="tile c2 r1">2</div>
+        <div id="n3" class="tile c3 r1">3</div>
+        <div id="n4" class="tile c4 r1">4</div>
+        <div id="n5" class="tile c1 r2">5</div>
+        <div id="n6" class="tile c2 r2">6</div>
+        <div id="n7" class="tile c3 r2">7</div>
+        <div id="n8" class="tile c4 r2">8</div>
+        <div id="n9" class="tile c1 r3">9</div>
+        <div id="n10" class="tile c2 r3">10</div>
+        <div id="n11" class="tile c3 r3">11</div>
+        <div id="n12" class="tile c4 r3">12</div>
+        <div id="n13" class="tile c1 r4">13</div>
+        <div id="n14" class="tile c2 r4">14</div>
+        <div id="n15" class="tile c3 r4">15</div>
+        <div id="n16" class="tile c4 r4 tracer">
+          <button name="left" class="direction left" id="left">&larr;</button>
+          <button name="up" class="direction up" id="up">&uarr;</button>
+          <button name="right" class="direction right" id="right">&rarr;</button>
+          <button class="direction down" id="down">&darr;</button>
+        </div>
+      </div>
+    </div>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.2/underscore-min.js"></script>
+    <script src="js-15-game.js"></script>
+  </body>
+</html>
