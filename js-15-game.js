@@ -1,5 +1,3 @@
-// Updating switch case method...
-// http://designpepper.com/blog/drips/using-dispatch-tables-to-avoid-conditionals-in-javascript
 // Some upgrades, improvements, thoughts.
 // Arrow key controls.
 // We could make it the real game by randomizing the tiles.
@@ -19,6 +17,11 @@
 1 8 2 4 3 7 6 5
 ---------------
 0 6 0 1 0 2 1 0 == 10
+
+
+5, 13, 15, 8, 12, 3, 14, 10, 1, 11, 9, 7, 6, 4, 2
+-------------------------------------------------
+4, 12, 13, 6, 9,  3, 8, 6, 0,  5, 4,  3,  2,  1  0
 */
 
 // We don't need all possible solutions, we just need to test the output of shuffle for solvability. Bottom right most tile will always be the blank.
@@ -28,85 +31,138 @@
 // http://mathworld.wolfram.com/15Puzzle.html
 // Write a script for solvable sequences.
 
-var currentTracerPosition,
-    newTracerPosition,
-    newTracerId;
-var numberDestination,
-    numberDestinationId,
-    numberToMove;
 
-var moveCounter = 1;
-var moveTicker = document.getElementById('move-counter');
 
-var tilePositionIds = {
-  one: '1',
-  two: '2',
-  three: '3',
-  four: '4',
-  five: '5',
-  six: '6',
-  seven: '7',
-  eight: '8',
-  nine: '9',
-  ten: '10',
-  eleven: '11',
-  twelve: '12',
-  thirteen: '13',
-  fourteen: '14',
-  fifteen: '15',
-  sixteen: '16'
-};
+// List out a series of numbers that accomodates the puzzle size (size -1 to account for blank spot).
+// Need a variable to house the size of the game (width in squares).
+// Need to shuffle the size array and submit as a proposal. -- _.shuffle(numList);
+// Need an array to house the list of numbers for the proposal function to operate upon.
 
-var tilePositionClasses = {
-  1: 'tracer tile c1 r1',
-  2: 'tracer tile c2 r1',
-  3: 'tracer tile c3 r1',
-  4: 'tracer tile c4 r1',
-  5: 'tracer tile c1 r2',
-  6: 'tracer tile c2 r2',
-  7: 'tracer tile c3 r2',
-  8: 'tracer tile c4 r2',
-  9: 'tracer tile c1 r3',
-  10: 'tracer tile c2 r3',
-  11: 'tracer tile c3 r3',
-  12: 'tracer tile c4 r3',
-  13: 'tracer tile c1 r4',
-  14: 'tracer tile c2 r4',
-  15: 'tracer tile c3 r4',
-  16: 'tracer tile c4 r4'
+//puzzleSize * puzzleSize => puzzleShuffled(puzzleList) => puzzleSolvable(puzzleProposal)
+//puzzleShuffled
+//puzzleProposal
+
+function createPuzzleSize(size){
+    return Math.pow(size, 2);
 }
 
-// Only tracking 1 - 15 to keep the tracer in the bottom right.
-var numList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-var proposedPuzzleNumList = [];
-var newNumListShuffled = _.shuffle(numList);
-
-var tileList = $('.board').children();
-
-function reassignTracer(){
-  $('.board').find('button[name=left]').parent().addClass('tracer');
+function createPuzzleArray(size){
+    i = 1;
+    var puzzleArray = [];
+    while (i < size) {
+        puzzleArray.push(i);
+        i++;
+    };
+    return puzzleArray;
 }
 
-var numberOfInversions = 0;
+function countInversions(proposal){
+    var proposalHolster = proposal.slice(0);
+    console.log(proposal);
 
-
-function shuffleNumList(){
-  newNumListShuffled = _.shuffle(numList);
-  examineShuffle(newNumListShuffled);
+    console.log("Count inversions, but show the proposal.")
+    console.log(proposal);
+    // We're returning the number of inversions but it's being passed in as proposal into the checkSolvability function. It will need to be referenced correctly there.
+    var numberOfInversions = 0;
+    while (proposal.length>0){
+        var key = proposal[0];
+        for(i=1; i<proposal.length; i++){
+            if(key>proposal[i]){
+                numberOfInversions ++;
+            }
+        }
+        proposal.shift();
+    }
+    return numberOfInversions;
 }
 
-function reassignTileNumber(proposal){
-  var tracerId = $('.tracer').attr('id');
-  $('.tracer').attr('id', 'resetting');
-  $('#n16').attr('id', tracerId);
-  $('.tracer').attr('id', 'n16');
-  moveCounter = true;
-
-  for(i=0; i<proposal.length; i++){
-    $(tileList[i]).html(proposal[i]);
+function checkSolvability(proposal){
+  if (proposal % 2 === 0){
+    console.log("This puzzle is not solvable, reshuffling array. Number of inversions is " + proposal);
+    generatePuzzle(6);
+  } else {
+    console.log("This puzzle is solvable, enjoy the game.");
+    createNewPuzzle();
   }
 }
 
+function createNewPuzzle() {
+    console.log("Setup the numbers here...");
+}
+
+function generatePuzzle(size) {
+  checkSolvability(countInversions(_.shuffle(createPuzzleArray(createPuzzleSize(size)))));
+}
+
+generatePuzzle(4);
+
+// Keep the solvability functions...
+/*
+function examineShuffle(proposal){
+  puzzle.holster = puzzle.proposal.slice(0);
+  while (puzzle.proposal.length>0){
+  	var key = puzzle.proposal[0];
+    for(i=1; i<puzzle.proposal.length; i++){
+      if(key>puzzle.proposal[i]){
+        numberOfInversions ++;
+      }
+    }
+    puzzle.proposal.shift();
+  }
+}
+*/
+
+/*
+console.group("Testing puzzle sizes, resulting arrays and solvability");
+console.log("Given a size of 4 wide, the sqaure will be " + createPuzzleSize(4) + " tiles.");
+console.log("Given the above size, we'll need this many numbers to play.")
+console.log(createPuzzleArray(createPuzzleSize(4)));
+//console.log("Given the numbers above, we need to shuffle them.")
+//console.log(_.shuffle(createPuzzleArray(createPuzzleSize(4))));
+console.log("Count the number of inversions in this solution.");
+console.log(countInversions(_.shuffle(createPuzzleArray(createPuzzleSize(4)))));
+//console.log(isThisSolvable(countInversions(_.shuffle(createPuzzleArray(createPuzzleSize(4))))));
+console.groupEnd();
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// var numList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+
+
+var numList = [];
+var puzzleProposal = [];
+// var newNumListShuffled = _.shuffle(numList);
+
+
+
+
+
+
+
+
+
+
+
+
+// Keep the solvability functions...
 function examineShuffle(){
   numberOfInversions = 0;
   newNumListShuffled = _.shuffle(numList);
@@ -127,7 +183,7 @@ function examineShuffle(){
   checkSolvability(proposal);
 }
 
-function checkSolvability(proposal){
+function ZZcheckSolvability(proposal){
   console.log(proposal);
   if (numberOfInversions % 2 === 0){
     //console.log("This puzzle is not solvable, reshuffling array. Number of inversions is " + numberOfInversions);
@@ -139,110 +195,6 @@ function checkSolvability(proposal){
     reassignTileNumber(proposal);
   }
 }
-
-var commandTables = {
-  up: function(){
-    //Row = -1
-    //N = n-4
-    getCurrentTracerPosition();
-    newTracerPosition = currentTracerPosition - 4;
-    setNewPositionId();
-    var distanceToMove = 4;
-    setNumberPositionId(newTracerPosition + distanceToMove);
-  },
-
-  down: function(){
-    //Row = +1
-    //N = n+4
-    getCurrentTracerPosition();
-    newTracerPosition = currentTracerPosition + 4;
-    setNewPositionId();
-    var distanceToMove = 4;
-    setNumberPositionId(newTracerPosition - distanceToMove);
-  },
-
-  left: function(){
-    //Column = -1
-    //N = n-1
-    getCurrentTracerPosition();
-    newTracerPosition = currentTracerPosition - 1;
-    setNewPositionId();
-    var distanceToMove = 1;
-    setNumberPositionId(newTracerPosition + distanceToMove);
-  },
-  right: function(){
-    //Column = +1
-    //N = n+1
-    getCurrentTracerPosition();
-    newTracerPosition = currentTracerPosition + 1;
-    setNewPositionId();
-    var distanceToMove = 1;
-    setNumberPositionId(newTracerPosition - distanceToMove);
-  }
-};
-
-function getCurrentTracerPosition(){
-  currentTracerPosition = parseInt(currentTracerPosition.substring(1, currentTracerPosition.length), 10);
-}
-
-function setNewPositionId(){
-  newTracerId = 'n' + newTracerPosition;
-  newTracerId = (_.invert(tilePositionIds)[newTracerPosition]);
-  $('.tracer').attr('class', tilePositionClasses[newTracerPosition]).attr('id', '');
-  numberToMove = document.getElementById('n' + newTracerPosition);
-  numberToMove.id = (_.invert(tilePositionIds)[newTracerPosition]);
-}
-
-function setNumberPositionId(equationForDistance){
-  numberDestination = equationForDistance;
-  numberDestinationId = 'n' + numberDestination; //n-1
-  numberToMove.id = numberDestinationId;
-  resolveNewTracerPosition();
-}
-
-function resolveNewTracerPosition(){
-  newTracerClass = $('.tracer').attr('class');
-  newTracerId = 'n' + (_.invert(tilePositionClasses)[newTracerClass]);
-  $('.tracer').attr('class', tilePositionClasses[newTracerPosition]).attr('id', newTracerId);
-
-}
-
-function dispatchTables(path){
-  resolveMoveCounter(moveCounter++);
-  setGameStatus();
-  commandTables[path]();
-}
-
-function setGameStatus(){
-  if(moveCounter === 1){
-    $('.game').toggleClass('is-new-game is-in-progress');
-  }else if(moveCounter === false){
-    $('.game').removeClass('is-new-game').addClass('is-resetting');
-    $('.game').removeClass('is-in-progress').addClass('is-resetting');
-    resolveMoveCounter(0);
-  }
-}
-
-function incrementMoveCounter(){
-  moveCounter ++;
-  moveTicker.innerHTML = moveCounter;
-}
-
-function resolveMoveCounter(moveValue){
-  console.log(moveValue);
-  document.getElementById('move-counter').innerHTML = (moveValue);
-}
-
-function resetMeters(){
-  resolveMoveCounter(0);
-  setGameStatus();
-}
-
-$('#reset').click(function(){
-  moveCounter = false;
-  examineShuffle();
-  reassignTileNumber();
-});
 
 // key binding from .... https://raw.githubusercontent.com/jstimpfle/tetris-on-a-plane/master/tetris.js
 // this part is still being worked on
@@ -270,30 +222,5 @@ function setKeyHandler() {
     }
   });
 }
-
-$('#up').click(function(){
-  directionMoving = this.id;
-  currentTracerPosition = $(this).parent().attr('id');
-  dispatchTables('up');
-});
-
-
-$('#down').click(function(){
-  directionMoving = this.id;
-  currentTracerPosition = $(this).parent().attr('id');
-  dispatchTables('down');
-});
-
-$('#right').click(function(){
-  directionMoving = this.id;
-  currentTracerPosition = $(this).parent().attr('id');
-  dispatchTables('right');
-});
-
-$('#left').click(function(){
-  directionMoving = this.id;
-  currentTracerPosition = $(this).parent().attr('id');
-  dispatchTables('left');
-});
 
 setKeyHandler();
