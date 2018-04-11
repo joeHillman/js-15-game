@@ -14,8 +14,12 @@
   visibility: hidden;
 }
 
+.reset-button {
+  float: left;
+}
+
 .wrap {
-  width: 700px;
+  width: 1000px;
   margin: 50px auto 0;
 }
 
@@ -24,16 +28,25 @@
 }
 
 .board {
-  width: 600px;
-  height: 600px;
-  margin: 0 auto;
+  clear: left;
+  width: 300px;
+  height: 300px;
+  margin: 20px auto;
   background: #333;
   position: relative;
+  float: left;
+}
+
+#controls {
+  float: left;
+  margin-left: 20px;
+  width: 120px;
+  margin-top: 20px;
 }
 
 .tile {
-  width: 150px;
-  height: 150px;
+  width: 75px;
+  height: 75px;
   background: #ccc;
   position: absolute;
   outline: 1px solid black;
@@ -41,14 +54,12 @@
 }
 
 .tracer {
-  background: #000;
+  background: #eee;
 }
 
 .direction {
-  width: 50%;
-  height: 50%;
-  display: inline-block;
-  float: left;
+  width: 75px;
+  height: 75px;
 }
 
 #one, #five, #nine, #thirteen, #n1, #n5, #n9, #n13, .c1 {
@@ -56,15 +67,15 @@
 }
 
 #two, #six, #ten, #fourteen, #n2, #n6, #n10, #n14, .c2 {
-  left: 150px;
+  left: 75px;
 }
 
 #three, #seven, #eleven, #fifteen, #n3, #n7, #n11, #n15, .c3 {
-  left: 300px;
+  left: 150px;
 }
 
 #four, #eight, #twelve, #sixteen, #n4, #n8, #n12, #n16, .c4 {
-  left: 450px;
+  left: 225px;
 }
 
 #one, #two, #three, #four, #n1, #n2, #n3, #n4, .r1 {
@@ -72,13 +83,13 @@
 }
 
 #five, #six, #seven, #eight, #n5, #n6, #n7, #n8, .r2 {
-  top: 150px;
+  top: 75px;
 }
 
 #nine, #ten, #eleven, #twelve, #n9, #n10, #n11, #n12, .r3 {
-  top: 300px;
+  top: 150px;
 }
 
 #thirteen, #fourteen, #fifteen, #sixteen, #n13, #n14, #n15, #n16, .r4 {
-  top: 450px;
+  top: 225px;
 }

@@ -34,35 +34,18 @@
 
 
 // List out a series of numbers that accomodates the puzzle size (size -1 to account for blank spot).
-// Need a variable to house the size of the game (width in squares).
+// Need a variable to house the size of the game. Skip the variable and build a prompt function later on.
 // Need to shuffle the size array and submit as a proposal. -- _.shuffle(numList);
 // Need an array to house the list of numbers for the proposal function to operate upon.
 
-//puzzleSize * puzzleSize => puzzleShuffled(puzzleList) => puzzleSolvable(puzzleProposal)
-//puzzleShuffled
-//puzzleProposal
+let numList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+let shuffleNumList = _.shuffle(numList);
 
-function createPuzzleSize(size){
-    return Math.pow(size, 2);
-}
-
-function createPuzzleArray(size){
-    i = 1;
-    var puzzleArray = [];
-    while (i < size) {
-        puzzleArray.push(i);
-        i++;
-    };
-    return puzzleArray;
-}
+console.log(shuffleNumList);
 
 function countInversions(proposal){
     var proposalHolster = proposal.slice(0);
-    console.log(proposal);
 
-    console.log("Count inversions, but show the proposal.")
-    console.log(proposal);
-    // We're returning the number of inversions but it's being passed in as proposal into the checkSolvability function. It will need to be referenced correctly there.
     var numberOfInversions = 0;
     while (proposal.length>0){
         var key = proposal[0];
@@ -76,80 +59,22 @@ function countInversions(proposal){
     return numberOfInversions;
 }
 
-function checkSolvability(proposal){
+function checkSolvability(proposal, size){
   if (proposal % 2 === 0){
+    //console.log("The proposed puzzle size is...", size)
     console.log("This puzzle is not solvable, reshuffling array. Number of inversions is " + proposal);
-    generatePuzzle(6);
+    generatePuzzle(size);
   } else {
-    console.log("This puzzle is solvable, enjoy the game.");
+    console.log("This puzzle is solvable", "The number of inversions is", proposal);
     createNewPuzzle();
   }
 }
 
-function createNewPuzzle() {
-    console.log("Setup the numbers here...");
-}
-
-function generatePuzzle(size) {
-  checkSolvability(countInversions(_.shuffle(createPuzzleArray(createPuzzleSize(size)))));
-}
-
-generatePuzzle(4);
-
-// Keep the solvability functions...
-/*
-function examineShuffle(proposal){
-  puzzle.holster = puzzle.proposal.slice(0);
-  while (puzzle.proposal.length>0){
-  	var key = puzzle.proposal[0];
-    for(i=1; i<puzzle.proposal.length; i++){
-      if(key>puzzle.proposal[i]){
-        numberOfInversions ++;
-      }
-    }
-    puzzle.proposal.shift();
-  }
-}
-*/
-
-/*
-console.group("Testing puzzle sizes, resulting arrays and solvability");
-console.log("Given a size of 4 wide, the sqaure will be " + createPuzzleSize(4) + " tiles.");
-console.log("Given the above size, we'll need this many numbers to play.")
-console.log(createPuzzleArray(createPuzzleSize(4)));
-//console.log("Given the numbers above, we need to shuffle them.")
-//console.log(_.shuffle(createPuzzleArray(createPuzzleSize(4))));
-console.log("Count the number of inversions in this solution.");
-console.log(countInversions(_.shuffle(createPuzzleArray(createPuzzleSize(4)))));
-//console.log(isThisSolvable(countInversions(_.shuffle(createPuzzleArray(createPuzzleSize(4))))));
-console.groupEnd();
-*/
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// var numList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-
-
-var numList = [];
-var puzzleProposal = [];
-// var newNumListShuffled = _.shuffle(numList);
+// let numList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+// let shuffleNumList = _.shuffle(numList);
 
 
 
@@ -183,18 +108,6 @@ function examineShuffle(){
   checkSolvability(proposal);
 }
 
-function ZZcheckSolvability(proposal){
-  console.log(proposal);
-  if (numberOfInversions % 2 === 0){
-    //console.log("This puzzle is not solvable, reshuffling array. Number of inversions is " + numberOfInversions);
-    examineShuffle();
-
-  } else {
-    console.log(numberOfInversions);
-    console.log("This puzzle is solvable, enjoy the game.");
-    reassignTileNumber(proposal);
-  }
-}
 
 // key binding from .... https://raw.githubusercontent.com/jstimpfle/tetris-on-a-plane/master/tetris.js
 // this part is still being worked on
